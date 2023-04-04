@@ -4,10 +4,16 @@ import com.example.Get_Tested.Role.Role;
 import com.example.Get_Tested.Role.RoleName;
 import com.example.Get_Tested.Role.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -21,8 +27,24 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User register(UserRegistrationDTO userRegistrationDTO) {
-        System.out.println("starting the user reg");
+    private AuthenticationManager authenticationManager;
+
+//    public UserService(AuthenticationManager authenticationManager){
+//        this.authenticationManager = authenticationManager;
+//    }
+
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       PasswordEncoder passwordEncoder,
+                       AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
+
+    public String register(UserRegistrationDTO userRegistrationDTO) {
+        //System.out.println("starting the user reg");
         if (userRepository.existsByUsername(userRegistrationDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
@@ -43,14 +65,25 @@ public class UserService {
                 passwordEncoder.encode(userRegistrationDTO.getPassword())
         );
 
-        System.out.println("finished building the user");
-        // Assigning the default role
-//        Role userRole = roleRepository.findByName(RoleName.USER)
-//                .orElseThrow(() -> new RuntimeException("User Role not found"));
-//        newUser.setRoles(Collections.singleton(userRole));
-//        newUser.setEnabled(true);
+        //System.out.println("finished building the user");
 
+
+        Set<Role> roles = new HashSet<>();
+//        Role userRole = roleRepository.findByName(RoleName.USER).get();
+       //Role userRole = roleRepository.findByName(RoleName.valueOf("USER")).orElseThrow(() -> new RuntimeException("User Role not found"));
+        Role userRole = new Role(RoleName.USER);
+        roles.add(userRole);
+        newUser.setRoles(roles);
+        userRepository.save(newUser);
         // Save the new user in the database
-        return userRepository.save(newUser);
+        return "user registered successfully";
+    }
+
+    public String login(UserLoginDTO loginDTO){
+        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
+                loginDTO.getPassword()));
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
+        return "user logged-in successfully";
     }
 }

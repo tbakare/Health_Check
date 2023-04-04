@@ -1,6 +1,5 @@
 package com.example.Get_Tested.User;
 
-
 import com.example.Get_Tested.LabRequisition.LabRequisition;
 import com.example.Get_Tested.Medication.Medication;
 import com.example.Get_Tested.Message.Message;
@@ -11,12 +10,20 @@ import com.example.Get_Tested.SelfTestingKit.SelfTestingKit;
 import com.example.Get_Tested.SexualPartner.SexualPartner;
 import com.example.Get_Tested.Test.Test;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -32,7 +39,7 @@ public class User {
     private String lastName;
 
     @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
 
     @Column(name = "alberta_health_number")
     private String albertaHealthNumber;
@@ -78,12 +85,14 @@ public class User {
 
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade =  CascadeType.ALL)
+    @JoinTable( name = "users_roles",
+    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name= "role_id", referencedColumnName = "id")
+    )
     private Set<Role> roles;
 
-    public User() {}
-
-    public User(String firstName, String lastName, LocalDate dateOfBirth, String albertaHealthNumber, String treatyNumber,
+    public User(String firstName, String lastName, String dateOfBirth, String albertaHealthNumber, String treatyNumber,
                 String mailingAddress, String emailAddress, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -96,171 +105,171 @@ public class User {
         this.password = password;
     }
 
-    public User(String firstName, String lastName, String dateOfBirth, String albertaHealthNumber, String treatyNumber, String mailingAddress, String emailAddress, String username, String encode) {
-    }
+//    public User(String firstName, String lastName, String dateOfBirth, String albertaHealthNumber, String treatyNumber, String mailingAddress, String emailAddress, String username, String encode) {
+//    }
 
     // Getters and setters for all the fields
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getAlbertaHealthNumber() {
-        return albertaHealthNumber;
-    }
-
-    public void setAlbertaHealthNumber(String albertaHealthNumber) {
-        this.albertaHealthNumber = albertaHealthNumber;
-    }
-
-    public String getTreatyNumber() {
-        return treatyNumber;
-    }
-
-    public void setTreatyNumber(String treatyNumber) {
-        this.treatyNumber = treatyNumber;
-    }
-
-    public String getMailingAddress() {
-        return mailingAddress;
-    }
-
-    public void setMailingAddress(String mailingAddress) {
-        this.mailingAddress = mailingAddress;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<Test> getTests() {
-        return tests;
-    }
-
-    public void setTests(List<Test> tests) {
-        this.tests = tests;
-    }
-
-    public List<Medication> getMedications() {
-        return medications;
-    }
-
-    public void setMedications(List<Medication> medications) {
-        this.medications = medications;
-    }
-
-    public List<Result> getResults() {
-        return results;
-    }
-
-    public void setResults(List<Result> results) {
-        this.results = results;
-    }
-
-    public Set<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
-    }
-
-    public List<SelfTestingKit> getSelfTestingKits() {
-        return selfTestingKits;
-    }
-
-    public void setSelfTestingKits(List<SelfTestingKit> selfTestingKits) {
-        this.selfTestingKits = selfTestingKits;
-    }
-
-    public List<SexualPartner> getSexualPartners() {
-        return sexualPartners;
-    }
-
-    public void setSexualPartners(List<SexualPartner> sexualPartners) {
-        this.sexualPartners = sexualPartners;
-    }
-
-    public List<LabRequisition> getLabRequisitions() {
-        return labRequisitions;
-    }
-
-    public void setLabRequisitions(List<LabRequisition> labRequisitions) {
-        this.labRequisitions = labRequisitions;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    public String getDateOfBirth() {
+//        return dateOfBirth;
+//    }
+//
+//    public void setDateOfBirth(String dateOfBirth) {
+//        this.dateOfBirth = dateOfBirth;
+//    }
+//
+//    public String getAlbertaHealthNumber() {
+//        return albertaHealthNumber;
+//    }
+//
+//    public void setAlbertaHealthNumber(String albertaHealthNumber) {
+//        this.albertaHealthNumber = albertaHealthNumber;
+//    }
+//
+//    public String getTreatyNumber() {
+//        return treatyNumber;
+//    }
+//
+//    public void setTreatyNumber(String treatyNumber) {
+//        this.treatyNumber = treatyNumber;
+//    }
+//
+//    public String getMailingAddress() {
+//        return mailingAddress;
+//    }
+//
+//    public void setMailingAddress(String mailingAddress) {
+//        this.mailingAddress = mailingAddress;
+//    }
+//
+//    public String getEmailAddress() {
+//        return emailAddress;
+//    }
+//
+//    public void setEmailAddress(String emailAddress) {
+//        this.emailAddress = emailAddress;
+//    }
+//
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+//
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public List<Order> getOrders() {
+//        return orders;
+//    }
+//
+//    public void setOrders(List<Order> orders) {
+//        this.orders = orders;
+//    }
+//
+//    public List<Test> getTests() {
+//        return tests;
+//    }
+//
+//    public void setTests(List<Test> tests) {
+//        this.tests = tests;
+//    }
+//
+//    public List<Medication> getMedications() {
+//        return medications;
+//    }
+//
+//    public void setMedications(List<Medication> medications) {
+//        this.medications = medications;
+//    }
+//
+//    public List<Result> getResults() {
+//        return results;
+//    }
+//
+//    public void setResults(List<Result> results) {
+//        this.results = results;
+//    }
+//
+//    public Set<Message> getMessages() {
+//        return messages;
+//    }
+//
+//    public void setMessages(Set<Message> messages) {
+//        this.messages = messages;
+//    }
+//
+//    public List<SelfTestingKit> getSelfTestingKits() {
+//        return selfTestingKits;
+//    }
+//
+//    public void setSelfTestingKits(List<SelfTestingKit> selfTestingKits) {
+//        this.selfTestingKits = selfTestingKits;
+//    }
+//
+//    public List<SexualPartner> getSexualPartners() {
+//        return sexualPartners;
+//    }
+//
+//    public void setSexualPartners(List<SexualPartner> sexualPartners) {
+//        this.sexualPartners = sexualPartners;
+//    }
+//
+//    public List<LabRequisition> getLabRequisitions() {
+//        return labRequisitions;
+//    }
+//
+//    public void setLabRequisitions(List<LabRequisition> labRequisitions) {
+//        this.labRequisitions = labRequisitions;
+//    }
+//
+//    public boolean isEnabled() {
+//        return enabled;
+//    }
+//
+//    public void setEnabled(boolean enabled) {
+//        this.enabled = enabled;
+//    }
+//
+//    public Set<Role> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Set<Role> roles) {
+//        this.roles = roles;
+//    }
 
 }
 

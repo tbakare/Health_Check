@@ -1,4 +1,4 @@
-package com.example.Get_Tested.User;
+package com.example.Get_Tested.Security;
 
 import com.example.Get_Tested.Role.Role;
 import com.example.Get_Tested.User.User;
@@ -12,17 +12,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
