@@ -18,7 +18,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -28,51 +27,13 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
-        //System.out.println("reg endpoint");
-        //User registeredUser = userService.register(userRegistrationDTO);
         String response = userService.register(userRegistrationDTO);
-        //System.out.println("end reg endpoint");
         return ResponseEntity.ok("User registered successfully");
     }
-
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) {
-//        userAuthService.registerUser(userRegistrationDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
-//    }
-
-
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        userLoginDTO.getUsername(),
-//                        userLoginDTO.getPassword()
-//                )
-//        );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String jwt = jwtTokenProvider.generateToken(authentication);
-//        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
-//    }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(userRegistrationDTO.getUsername(), userRegistrationDTO.getPassword())
-//        );
-//
-//        if (authentication.isAuthenticated()) {
-//            return ResponseEntity.ok("User authenticated successfully");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-//        }
-//    }
 
     @PostMapping(value = {"/login", "/sign-in"})
     public ResponseEntity<String> login (@RequestBody  UserLoginDTO userLoginDTO){
         String response = userService.login(userLoginDTO);
-
         return ResponseEntity.ok(response);
     }
 }

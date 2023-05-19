@@ -20,7 +20,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RoleRepository roleRepository;
 
@@ -28,10 +27,6 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     private AuthenticationManager authenticationManager;
-
-//    public UserService(AuthenticationManager authenticationManager){
-//        this.authenticationManager = authenticationManager;
-//    }
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
@@ -44,8 +39,9 @@ public class UserService {
     }
 
     public String register(UserRegistrationDTO userRegistrationDTO) {
-        //System.out.println("starting the user reg");
+
         if (userRepository.existsByUsername(userRegistrationDTO.getUsername())) {
+            //return "Username already Exists";
             throw new IllegalArgumentException("Username already exists");
         }
         if (userRepository.existsByEmailAddress(userRegistrationDTO.getEmailAddress())) {
@@ -65,13 +61,8 @@ public class UserService {
                 passwordEncoder.encode(userRegistrationDTO.getPassword())
         );
 
-        //System.out.println("finished building the user");
-
-
         Set<Role> roles = new HashSet<>();
-//        Role userRole = roleRepository.findByName(RoleName.USER).get();
-       //Role userRole = roleRepository.findByName(RoleName.valueOf("USER")).orElseThrow(() -> new RuntimeException("User Role not found"));
-        Role userRole = new Role(RoleName.USER);
+        Role userRole = roleRepository.findByName(RoleName.USER).get();
         roles.add(userRole);
         newUser.setRoles(roles);
         userRepository.save(newUser);

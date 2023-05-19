@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoCon
 @SpringBootApplication
 //@EnableAutoConfiguration(exclude = {PropertyPlaceholderAutoConfiguration.class})
 public class GetTestedApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(GetTestedApplication.class, args);
 	}

@@ -21,7 +21,6 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     @ManyToOne
     @JoinColumn(name = "sexual_partner_id")
     private SexualPartner sexualPartner;
